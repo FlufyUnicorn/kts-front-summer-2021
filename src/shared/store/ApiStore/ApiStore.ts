@@ -1,35 +1,55 @@
-import {ApiResponse, IApiStore, RequestParams, HTTPMethod} from "./types";
+import { ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP,} from "./types";
 
-const baseUrl = 'https://api.github.com/';
 export default class ApiStore implements IApiStore {
-    public baseUrl:string;
+  readonly baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
+  private getRequestData<ReqT>(params: RequestParams<ReqT>): [string, RequestInit] {
+    let endpoint = `${this.baseUrl}${params.endpoint}`;
+
+    const req: RequestInit = {
+      method: params.method,
+      headers: { ...params.headers },
+    };
+
+    if (params.method === HTTPMethod.GET) {
+      endpoint = `${endpoint}?&(qs.stringify(params.data)}`;
     }
 
-    async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
-        let response;
-        try {
-            response = await fetch(baseUrl + params.endpoint, {
-                method: params.method,
-            });
-        } catch(error) {
-            console.log(error);
+    if (params.method === HTTPMethod.POST) {
+      req.body = JSON.stringify(params.data);
+      req.headers = {
+        ...req.headers,
+        "Content-Type" : "application/json;charset=UTF-8"
+      };
+    }
+    return [endpoint, req];
+  }
 
-            return {
-                success: false,
-                data: {} as ErrorT,
-                status: response?.status || 500,
-            }
-        }
-
-        const data = await response.json();
-
+  async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
+    try {
+      const response = await fetch(...this.getRequestData(params));
+      if (response.ok) {
         return {
-            success: true,
-            data: data as SuccessT,
-            status: response.status,
-        };
+          success: true,
+          data: await response.json(),
+          status: response.status,
+        }
+      }
+      return {
+        success: false,
+        status: response.status,
+        data: await response.json(),
+      };
+    } catch (e) {
+      return {
+        success: false,
+        data: e,
+        status: StatusHTTP.UNEXPECTED_ERROR,
+      };
     }
+  }
 }
