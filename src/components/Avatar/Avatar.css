@@ -1,0 +1,8 @@
+.repo-icon {
+  width: 80px;
+  height: 80px;
+  margin: 12px;
+
+  border-radius: 40px;
+  flex-shrink: 0;
+}

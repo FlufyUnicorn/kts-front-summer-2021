@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import {MainPage} from "./pages/MainPage";
+import {ReposSearchPage} from "./pages/ReposSearchPage";
 import './root/root';
 
 function App() {
   return (
-    <MainPage/>
+    <ReposSearchPage/>
   );
 }
 

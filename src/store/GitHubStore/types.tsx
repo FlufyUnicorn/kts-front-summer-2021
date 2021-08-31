@@ -7,17 +7,16 @@ export type GetOrganizationReposListParams = {
 export type GitHubRepoOwner = {
     id: number;
     url: string;
-    avatar_urls: string;
+    avatar_url: string;
     login: string;
-
-
 }
 
 export type RepoItem = {
     id: number;
     url: string;
     name: string;
-    stareges_count: number;
+    stargazers_count: number;
+    updated_at: Date;
     owner: GitHubRepoOwner;
 }
 
