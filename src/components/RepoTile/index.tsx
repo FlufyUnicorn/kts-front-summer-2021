@@ -1,1 +1,1 @@
-export { RepoTile } from "./RepoTile";
+export { default } from "./RepoTile";

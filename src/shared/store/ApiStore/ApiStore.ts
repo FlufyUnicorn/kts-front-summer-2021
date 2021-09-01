@@ -1,4 +1,10 @@
-import { ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP,} from "./types";
+import {
+  ApiResponse,
+  HTTPMethod,
+  IApiStore,
+  RequestParams,
+  StatusHTTP,
+} from "./types";
 
 export default class ApiStore implements IApiStore {
   readonly baseUrl: string;
@@ -7,7 +13,9 @@ export default class ApiStore implements IApiStore {
     this.baseUrl = baseUrl;
   }
 
-  private getRequestData<ReqT>(params: RequestParams<ReqT>): [string, RequestInit] {
+  private getRequestData<ReqT>(
+    params: RequestParams<ReqT>
+  ): [string, RequestInit] {
     let endpoint = `${this.baseUrl}${params.endpoint}`;
 
     const req: RequestInit = {
@@ -23,13 +31,15 @@ export default class ApiStore implements IApiStore {
       req.body = JSON.stringify(params.data);
       req.headers = {
         ...req.headers,
-        "Content-Type" : "application/json;charset=UTF-8"
+        "Content-Type": "application/json;charset=UTF-8",
       };
     }
     return [endpoint, req];
   }
 
-  async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
+  async request<SuccessT, ErrorT = any, ReqT = {}>(
+    params: RequestParams<ReqT>
+  ): Promise<ApiResponse<SuccessT, ErrorT>> {
     try {
       const response = await fetch(...this.getRequestData(params));
       if (response.ok) {
@@ -37,7 +47,7 @@ export default class ApiStore implements IApiStore {
           success: true,
           data: await response.json(),
           status: response.status,
-        }
+        };
       }
       return {
         success: false,

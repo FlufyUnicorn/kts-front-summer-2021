@@ -1,4 +1,4 @@
-.search_button {
+.search button {
     background: var(--colorAccent);
     border-radius: 6px;
     width: 50px;
@@ -7,16 +7,18 @@
     cursor: pointer;
 }
 
-.search_button:hover {
-    filter: brightness(0.95);
+.search button:hover {
+    filter: brightness(0.97);
+    transition-duration: 0.5s;
 }
 
 .disabled {
     filter: brightness(1.5);
     cursor: auto;
+    transition-duration: 0.5s;
 }
 
 .disabled:hover {
     filter: brightness(1.5);
-
+    transition-duration: 0.5s;
 }

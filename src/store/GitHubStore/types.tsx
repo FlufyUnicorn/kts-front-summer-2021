@@ -20,6 +20,19 @@ export type RepoItem = {
     owner: GitHubRepoOwner;
 }
 
+export type BranchItem = {
+    name: string;
+};
+
+export type GetOrganizationRepoBranchesParams = {
+    organizationName: string;
+    repoName: string;
+}
+
+export interface PostSomeDataPrams<ReqT> {
+    data: ReqT;
+}
+
 export interface IGitHubStore {
     getOrganizationReposList(params: GetOrganizationReposListParams): Promise<ApiResponse<RepoItem[], any>>;
 }

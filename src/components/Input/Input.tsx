@@ -4,20 +4,22 @@ import React from "react";
 export type InputProps = {
   value: string;
   placeholder: string;
-  //onChange: (e: React.ChangeEvent) => void;
-  onChange: (someValue:string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> = ({
   value,
   placeholder,
   onChange,
 }: InputProps) => {
   return (
     <input
+      type="text"
       placeholder={placeholder}
       value={value}
-      onChange={(event)=> onChange(event.target.value)}
+      onChange={onChange}
     />
   );
 };
+
+export default React.memo(Input);

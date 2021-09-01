@@ -16,11 +16,11 @@
 .search input:disabled {
   background: var(--colorDisabled);
   border: 1px solid var(--colorBorder);
-  transition: all;
+  transition-duration: 1s;
 }
 
 .search input:focus {
   background: var(--colorBackground);
   border: 1px solid var(--colorAccent);
-  transition: all;
+  transition-duration: 1s;
 }

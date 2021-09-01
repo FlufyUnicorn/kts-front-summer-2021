@@ -1,13 +1,29 @@
 import React from "react";
-import styles from "./button.module.css";
-import cn from "classnames";
+import "./Button.css";
 
- export type ButtonProps = {
-   onClick?: (e: React.MouseEvent) => void;
-   children: React.ReactNode;
-   disabled?: boolean;
+export type ButtonProps = {
+  onClick?: (e: React.MouseEvent) => void;
+  children: React.ReactNode;
+  disabled?: boolean;
 };
 
-export const Button: React.FC <ButtonProps> = ({onClick,children,disabled=false}: ButtonProps) => {
-  return <button className={cn(styles.search_button, {[styles.disabled]: disabled,})} onClick={onClick} >{children}</button>;
+const Button: React.FC<ButtonProps> = ({
+  onClick,
+  children,
+  disabled,
+}: ButtonProps) => {
+  if (!disabled) {
+    return (
+      <button type="submit"  onClick={onClick}>
+        {children}
+      </button>
+    );
+  }
+  return (
+    <button type="submit"  disabled={true}>
+      {children}
+    </button>
+  );
 };
+
+export default Button;

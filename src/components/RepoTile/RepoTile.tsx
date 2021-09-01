@@ -1,17 +1,26 @@
 import * as React from "react";
 
-import { Avatar } from "@components/Avatar";
-import { RepoItem } from "../../store/GitHubStore/types";
+import Avatar from "@components/Avatar";
+import { RepoItem } from "@store/GitHubStore/types";
 import { StarIcon } from "@components/StarIcon";
 import dayjs from "dayjs";
-import '../../styles/colors.css'
 
+import "../../styles/colors.css";
 import "./RepoTile.css";
 
-export const RepoTile = (item: RepoItem) => {
+export type RepoTileProps = {
+  item: RepoItem;
+  onClick: (e: React.MouseEvent) => void;
+};
+
+const RepoTile: React.FC<RepoTileProps> = ({item, onClick}: RepoTileProps) => {
   return (
-    <div className="repo-card">
-      <Avatar alt="Аватар" src={item.owner.avatar_url} />
+    <div className="repo-card" onClick={onClick}>
+      <Avatar
+        alt="Аватар"
+        src={item.owner.avatar_url}
+        letter={item.name.charAt(0).toUpperCase()}
+      />
       <div className="repo-info">
         <div className="repo-name">{item.name}</div>
         <div className="repo-author">
@@ -21,7 +30,7 @@ export const RepoTile = (item: RepoItem) => {
         </div>
         <div className="repo-bottom-info">
           <div className="repo-rating">
-            <StarIcon currentColor={'var(--colorStar)'}/>
+            <StarIcon currentColor={"var(--colorStar)"} />
             {item.stargazers_count}
           </div>
           <div className="repo-update">
@@ -32,3 +41,5 @@ export const RepoTile = (item: RepoItem) => {
     </div>
   );
 };
+
+export default RepoTile;
