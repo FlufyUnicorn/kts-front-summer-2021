@@ -1,0 +1,8 @@
+.repo-branches {
+  font-size: 14px;
+  background-color: var(--colorBackground);
+  padding: 5px;
+  border-radius: 5px 5px 5px;
+  border: 1px solid var(--colorBorder);
+  display: block;
+}
