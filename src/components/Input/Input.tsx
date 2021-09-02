@@ -1,5 +1,6 @@
-import "./Input.css";
 import React from "react";
+
+import "./Input.css";
 
 export type InputProps = {
   value: string;

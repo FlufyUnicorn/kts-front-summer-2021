@@ -6,7 +6,7 @@
   flex-shrink: 0;
 }
 
-.first-company-letter {
+.company-letter {
   position: relative;
   width: 80px;
   height: 80px;
@@ -19,4 +19,3 @@
   text-align: center;
   color: var(--colorBackground);
 }
-

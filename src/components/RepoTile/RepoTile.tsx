@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Avatar from "@components/Avatar";
 import { RepoItem } from "@store/GitHubStore/types";
-import { StarIcon } from "@components/StarIcon";
+import StarIcon from "@components/StarIcon";
 import dayjs from "dayjs";
 
 import "../../styles/colors.css";
@@ -13,7 +13,10 @@ export type RepoTileProps = {
   onClick: (e: React.MouseEvent) => void;
 };
 
-const RepoTile: React.FC<RepoTileProps> = ({item, onClick}: RepoTileProps) => {
+const RepoTile: React.FC<RepoTileProps> = ({
+  item,
+  onClick,
+}: RepoTileProps) => {
   return (
     <div className="repo-card" onClick={onClick}>
       <Avatar

@@ -1,4 +1,6 @@
-export const SearchIcon = ({currentColor}:any) => {
+import React from "react";
+
+const SearchIcon = ({ currentColor }: any) => {
   return (
     <svg
       width="18"
@@ -14,3 +16,5 @@ export const SearchIcon = ({currentColor}:any) => {
     </svg>
   );
 };
+
+export default React.memo(SearchIcon);

@@ -1,5 +1,6 @@
-import "./Avatar.css";
 import React from "react";
+
+import "./Avatar.css";
 
 export type AvatarProps = {
   alt: string;

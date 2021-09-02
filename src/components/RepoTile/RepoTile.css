@@ -1,4 +1,4 @@
-@import '../../styles/colors.css';
+@import "../../styles/colors.css";
 
 .repo-card {
   width: 357px;
@@ -43,7 +43,6 @@
   font-size: 14px;
   line-height: 16px;
   color: var(--colorHint);
-
   margin-top: 4px;
 }
 

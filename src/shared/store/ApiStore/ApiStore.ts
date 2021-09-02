@@ -18,6 +18,7 @@ export default class ApiStore implements IApiStore {
   ): [string, RequestInit] {
     let endpoint = `${this.baseUrl}${params.endpoint}`;
 
+
     const req: RequestInit = {
       method: params.method,
       headers: { ...params.headers },
@@ -42,6 +43,7 @@ export default class ApiStore implements IApiStore {
   ): Promise<ApiResponse<SuccessT, ErrorT>> {
     try {
       const response = await fetch(...this.getRequestData(params));
+      console.log()
       if (response.ok) {
         return {
           success: true,

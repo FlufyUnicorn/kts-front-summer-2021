@@ -3,17 +3,16 @@ import * as React from "react";
 import Input from "@components/Input";
 import Button from "@components/Button";
 import RepoTile from "@components/RepoTile";
-import { ApiResponse } from "@ApiStore/types";
 import { RepoItem } from "@store/GitHubStore/types";
 import GitHubStore from "@store/GitHubStore";
-import { SearchIcon } from "@components/SearchIcon";
+import SearchIcon from "@components/SearchIcon";
 import RepoBranchesDrawer from "@components/ RepoBranchesDrawer";
 
 import "./ReposSearchPage.css";
-const gitHubStore = new GitHubStore();
-export const ReposSearchPage = () => {
 
-  //const [repos, setRepos] = React.useState<RepoItem[]>([]);
+const gitHubStore = new GitHubStore();
+
+export const ReposSearchPage = () => {
   const [visible, setVisible] = React.useState(false);
   const [selectedRepo, setSelectedRepo] = React.useState<null | RepoItem>(null);
 
@@ -23,37 +22,45 @@ export const ReposSearchPage = () => {
     list: [] as RepoItem[],
   });
 
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+    setSelectedRepo(null);
+  };
+
+  const handleKeyboard = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalState({ value: e.target.value, isLoading: false, list: [] });
+  };
+
   const handleClick = () => {
     setLocalState({
       value: localState.value,
       isLoading: true,
       list: localState.list,
     });
-
-  };
-
-    const showDrawer = () => {
-        setVisible(true);
-    };
-
-    const onClose = () => {
-        setVisible(false);
-        setSelectedRepo(null);
-    };
-
-    const handleKeyboard = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalState({ value: (e.target).value, isLoading: false, list: [] });
-    };
-
-  React.useEffect(() => {
     gitHubStore
-      .getOrganizationReposList({ organizationName: localState.value })
-      .then((result: ApiResponse<RepoItem[], any>) => {
+      .getOrganizationReposList({
+        organizationName: localState.value,
+      })
+      .then((result) => {
         if (result.success) {
-          setLocalState({value: localState.value, isLoading: false, list:result.data});
+          setLocalState({
+            value: localState.value,
+            isLoading: false,
+            list: result.data,
+          });
+        } else {
+          setLocalState({
+            value: localState.value,
+            isLoading: false,
+            list: localState.list,
+          });
         }
       });
-  }, [localState.value]);
+  };
   return (
     <div className="main-page">
       <div className="search">
@@ -68,16 +75,20 @@ export const ReposSearchPage = () => {
           onClick={handleClick}
         />
       </div>
-        {localState.list.map((item) => {
-            const handleRepoCardClick = () => {
-                setSelectedRepo(item);
-                showDrawer();
-            };
+      {localState.list.map((item) => {
+        const handleRepoCardClick = () => {
+          setSelectedRepo(item);
+          showDrawer();
+        };
         return (
           <RepoTile key={item.id} item={item} onClick={handleRepoCardClick} />
         );
       })}
-        <RepoBranchesDrawer selectedRepo={selectedRepo} onClose={onClose} visible={visible} />
+      <RepoBranchesDrawer
+        selectedRepo={selectedRepo}
+        onClose={onClose}
+        visible={visible}
+      />
     </div>
   );
 };

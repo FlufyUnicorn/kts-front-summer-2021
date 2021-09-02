@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 
-export const StarIcon = ({currentColor}:any) => {
+const StarIcon = ({ currentColor }: any) => {
   return (
     <svg
       className="rating-icon"
@@ -19,3 +19,5 @@ export const StarIcon = ({currentColor}:any) => {
     </svg>
   );
 };
+
+export default React.memo(StarIcon);

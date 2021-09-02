@@ -1,10 +1,12 @@
-import './ RepoBranchesDrawer.css'
-import "@config/config";
 import React from "react";
+
+import "@config/config";
 import { RepoItem, BranchItem } from "@store/GitHubStore/types";
 import GitHubStore from "@store/GitHubStore/GitHubStore";
 import { Drawer } from "antd";
 import { MAIN_CONST } from "@config/config";
+
+import "./ RepoBranchesDrawer.css";
 
 const gitHubStore = new GitHubStore();
 
@@ -19,12 +21,12 @@ const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   onClose,
   visible,
 }) => {
-  const [list, setList] = React.useState<[] | BranchItem[]>([]);
+  const [list, setList] = React.useState<BranchItem[]>([]);
   React.useEffect(() => {
     if (selectedRepo != null) {
       gitHubStore
         .getOrganizationRepoBranches({
-          organizationName: selectedRepo.owner.url,
+          organizationName: selectedRepo.owner.url.substring(29),
           repoName: selectedRepo.name,
         })
         .then((result) => {
@@ -32,7 +34,7 @@ const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
         });
     }
   }, [selectedRepo]);
-  if (selectedRepo != null) {
+  if (selectedRepo !== null) {
     return (
       <Drawer
         title={`${MAIN_CONST.SIDE_NAME_REPO} ${selectedRepo.name}`}
@@ -41,10 +43,10 @@ const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
         onClose={onClose}
         visible={visible}
       >
-        {list.map((element) => {
+        {list.map((item) => {
           return (
-            <p key={element.name} className="sp">
-              • {element.name}
+            <p key={item.name} className="repo-branches">
+              • {item.name}
             </p>
           );
         })}

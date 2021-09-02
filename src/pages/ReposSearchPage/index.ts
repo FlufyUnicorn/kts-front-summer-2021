@@ -1,1 +1,1 @@
-export {ReposSearchPage} from './ReposSearchPage'
+export { ReposSearchPage } from "./ReposSearchPage";

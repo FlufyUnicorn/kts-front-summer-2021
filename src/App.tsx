@@ -1,12 +1,10 @@
-import React from 'react';
-import './App.css';
-import {ReposSearchPage} from "./pages/ReposSearchPage";
-import './root/root';
+import React from "react";
+import { ReposSearchPage } from "./pages/ReposSearchPage";
+
+import "./App.css";
 
 function App() {
-  return (
-    <ReposSearchPage/>
-  );
+  return <ReposSearchPage />;
 }
 
 export default App;
