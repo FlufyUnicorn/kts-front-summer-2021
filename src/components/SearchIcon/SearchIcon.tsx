@@ -1,4 +1,5 @@
 import React from "react";
+import "../../styles/colors.scss";
 
 const SearchIcon = ({ currentColor }: any) => {
   return (

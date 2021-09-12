@@ -34,4 +34,15 @@ export default class GitHubStore implements IGitHubStore {
       method: HTTPMethod.GET,
     });
   }
+
+  async getOrganizationRepo(
+    params: GetOrganizationRepoBranchesParams
+  ): Promise<ApiResponse<RepoItem, any>> {
+    return await this.apiStore.request({
+      data: {},
+      endpoint: `/repos/${params.organizationName}/${params.repoName}`,
+      headers: {},
+      method: HTTPMethod.GET,
+    });
+  }
 }

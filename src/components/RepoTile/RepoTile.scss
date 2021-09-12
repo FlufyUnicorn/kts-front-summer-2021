@@ -1,12 +1,12 @@
-@import "../../styles/colors.css";
+@import "../../styles/colors.scss";
 
 .repo-card {
   width: 357px;
   height: 104px;
   margin-left: 20px;
   margin-top: 16px;
-  background: var(--colorBackground);
-  border: 1px solid var(--colorBorder);
+  background: $colorBackground;
+  border: 1px solid $colorBorder;
   box-sizing: border-box;
   border-radius: 6px;
   display: flex;
@@ -15,7 +15,7 @@
 
 .repo-card:hover {
   cursor: pointer;
-  box-shadow: 0 2px 6px var(--shadow);
+  box-shadow: 0 2px 6px $shadow;
 }
 
 .repo-info {
@@ -42,7 +42,7 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
-  color: var(--colorHint);
+  color: $colorHint;
   margin-top: 4px;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .repo-author:hover {
-  color: var(--colorLink);
+  color: $colorLink;
 }
 
 .repo-update {

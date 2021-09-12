@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./Button.css";
+import "./Button.scss";
 
 export type ButtonProps = {
   onClick?: (e: React.MouseEvent) => void;
@@ -11,20 +11,20 @@ export type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
-  disabled,
+  disabled = false,
 }: ButtonProps) => {
   if (!disabled) {
     return (
-      <button type="submit" onClick={onClick}>
+      <button type="submit" onClick={onClick} >
         {children}
       </button>
     );
   }
   return (
-    <button type="submit" disabled={true}>
+    <button disabled={true}>
       {children}
     </button>
   );
 };
 
-export default Button;
+export default React.memo(Button);

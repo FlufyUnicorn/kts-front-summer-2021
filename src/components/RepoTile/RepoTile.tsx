@@ -4,9 +4,10 @@ import Avatar from "@components/Avatar";
 import { RepoItem } from "@store/GitHubStore/types";
 import StarIcon from "@components/StarIcon";
 import dayjs from "dayjs";
+import {Link} from "react-router-dom";
 
-import "../../styles/colors.css";
-import "./RepoTile.css";
+import "@styles/colors.scss";
+import "./RepoTile.scss";
 
 export type RepoTileProps = {
   item: RepoItem;
@@ -18,7 +19,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
   onClick,
 }: RepoTileProps) => {
   return (
-    <div className="repo-card" onClick={onClick}>
+    <Link to={`/repos/${item.owner.login}/${item.name}`} className="repo-card" onClick={onClick}>
       <Avatar
         alt="Аватар"
         src={item.owner.avatar_url}
@@ -33,7 +34,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
         </div>
         <div className="repo-bottom-info">
           <div className="repo-rating">
-            <StarIcon currentColor={"var(--colorStar)"} />
+            <StarIcon currentColor={"#ff9432"} />
             {item.stargazers_count}
           </div>
           <div className="repo-update">
@@ -41,8 +42,8 @@ const RepoTile: React.FC<RepoTileProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
-export default RepoTile;
+export default React.memo(RepoTile);

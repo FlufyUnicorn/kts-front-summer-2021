@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 import Input from "@components/Input";
 import Button from "@components/Button";
@@ -6,20 +6,38 @@ import RepoTile from "@components/RepoTile";
 import { RepoItem } from "@store/GitHubStore/types";
 import GitHubStore from "@store/GitHubStore";
 import SearchIcon from "@components/SearchIcon";
-import RepoBranchesDrawer from "@components/ RepoBranchesDrawer";
+import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
 
-import "./ReposSearchPage.css";
+import "../../styles/colors.scss";
+import "./ReposSearchPage.scss";
 
-const gitHubStore = new GitHubStore();
+export const gitHubStore = new GitHubStore();
+
+type ReposContextType = { list: RepoItem[]; isLoading: boolean; load: () => void };
+
+const ReposContext = React.createContext<ReposContextType>({
+  list: [],
+  isLoading: true,
+  load: () => {},
+});
+
+const Provider = ReposContext.Provider;
+
+export const useReposContext = () => React.useContext(ReposContext);
 
 export const ReposSearchPage = () => {
   const [visible, setVisible] = React.useState(false);
   const [selectedRepo, setSelectedRepo] = React.useState<null | RepoItem>(null);
 
-  const [localState, setLocalState] = React.useState({
+
+  const [localState, setLocalState] = React.useState<{
+    value: string;
+    isLoading: boolean;
+    list: RepoItem[];
+  }>({
     value: "",
     isLoading: false,
-    list: [] as RepoItem[],
+    list: [],
   });
 
   const showDrawer = () => {
@@ -35,7 +53,11 @@ export const ReposSearchPage = () => {
     setLocalState({ value: e.target.value, isLoading: false, list: [] });
   };
 
-  const handleClick = () => {
+
+
+
+
+  const load = () => {
     setLocalState({
       value: localState.value,
       isLoading: true,
@@ -70,9 +92,9 @@ export const ReposSearchPage = () => {
           value={localState.value}
         />
         <Button
-          children={<SearchIcon currentColor={"var(--colorBackground)"} />}
+          children={<SearchIcon currentColor={"#ffffff"} />}
           disabled={localState.isLoading}
-          onClick={handleClick}
+          onClick={load}
         />
       </div>
       {localState.list.map((item) => {

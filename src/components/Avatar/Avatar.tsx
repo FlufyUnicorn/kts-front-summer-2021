@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./Avatar.css";
+import "./Avatar.scss";
 
 export type AvatarProps = {
   alt: string;
@@ -9,7 +9,7 @@ export type AvatarProps = {
 };
 
 const Avatar: React.FC<AvatarProps> = ({ alt, letter, src }: AvatarProps) => {
-  if (src == null) {
+  if (!src) {
     return <span className="company-letter">{letter}</span>;
   }
   return <img className="repo-icon" alt={alt} src={src} />;
