@@ -1,48 +1,49 @@
-import ApiStore from "@ApiStore/ApiStore";
+import ApiStore from "../../shared/store/ApiStore";
+import { ApiResponse, HTTPMethod } from "../../shared/store/ApiStore/types";
 import {
   IGitHubStore,
   GetOrganizationReposListParams,
   RepoItem,
-  GetOrganizationRepoBranchesParams,
+  GetRepoBranchesLisParams,
+  BranchItem,
+  GetOrganizationRepoByIdParams,
 } from "./types";
-import { HTTPMethod, ApiResponse } from "@ApiStore/types";
-import { BranchItem } from "./types";
 
-const BASE_URL = "https://api.github.com";
+const BASE_URL: string = "https://api.github.com";
 
 export default class GitHubStore implements IGitHubStore {
   private readonly apiStore = new ApiStore(BASE_URL);
 
   async getOrganizationReposList(
-    params: GetOrganizationReposListParams
+      params: GetOrganizationReposListParams
   ): Promise<ApiResponse<RepoItem[], any>> {
     return await this.apiStore.request({
       method: HTTPMethod.GET,
-      data: {},
+      endpoint: `/orgs/${params.organizationName}/repos?per_page=${params.per_page}&page=${params.page}`,
       headers: {},
-      endpoint: `/orgs/${params.organizationName}/repos`,
+      data: {},
     });
   }
 
-  async getOrganizationRepoBranches(
-    params: GetOrganizationRepoBranchesParams
-  ): Promise<ApiResponse<BranchItem[], any>> {
-    return await this.apiStore.request({
-      data: {},
-      endpoint: `/repos/${params.organizationName}/${params.repoName}/branches`,
-      headers: {},
-      method: HTTPMethod.GET,
-    });
-  }
-
-  async getOrganizationRepo(
-    params: GetOrganizationRepoBranchesParams
+  async getOrganizationRepoById(
+      params: GetOrganizationRepoByIdParams
   ): Promise<ApiResponse<RepoItem, any>> {
     return await this.apiStore.request({
-      data: {},
-      endpoint: `/repos/${params.organizationName}/${params.repoName}`,
-      headers: {},
       method: HTTPMethod.GET,
+      endpoint: `/repos/${params.organizationName}/${params.name}`,
+      headers: {},
+      data: {},
+    });
+  }
+
+  async getRepoBranchesList(
+      params: GetRepoBranchesLisParams
+  ): Promise<ApiResponse<BranchItem[], any>> {
+    return await this.apiStore.request({
+      method: HTTPMethod.GET,
+      endpoint: `/repos/${params.ownerName}/${params.repoName}/branches`,
+      headers: {},
+      data: {},
     });
   }
 }

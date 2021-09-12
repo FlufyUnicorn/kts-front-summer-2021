@@ -19,7 +19,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
   onClick,
 }: RepoTileProps) => {
   return (
-    <Link to={`/repos/${item.owner.login}/${item.name}`} className="repo-card" onClick={onClick}>
+    <Link to={`/repos/${item.id}`} className="repo-card" onClick={onClick}>
       <Avatar
         alt="Аватар"
         src={item.owner.avatar_url}

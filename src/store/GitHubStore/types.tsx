@@ -1,51 +1,56 @@
-import { ApiResponse } from "@ApiStore/types";
+import { ApiResponse } from "src/shared/store/ApiStore/types";
 
+// Параметры запроса
 export type GetOrganizationReposListParams = {
   organizationName: string;
+  per_page?: number;
+  page?: number;
+};
+
+// Параметры запроса
+export type GetRepoBranchesLisParams = {
+  ownerName: string;
+  repoName: string;
 };
 
 export type GitHubRepoOwner = {
-  id: number;
-  url: string;
-  avatar_url: string;
+  id: string;
   login: string;
+  avatar_url: string;
+  url: string;
 };
 
 export type RepoItem = {
-  id: number;
-  url: string;
+  id: string;
   name: string;
+  url: string;
+  private: boolean;
   stargazers_count: number;
-  updated_at: Date;
   owner: GitHubRepoOwner;
+  updated_at: Date;
 };
 
 export type BranchItem = {
   name: string;
+  protected: boolean;
+  protection_url: string;
 };
 
-export type GetOrganizationRepoBranchesParams = {
+export type GetOrganizationRepoByIdParams = {
+  name: string;
   organizationName: string;
-  repoName: string;
 };
-
-export type GetOrganizationRepoParams = {
-  organizationName: string;
-  repoName: string;
-};
-
-export interface PostSomeDataPrams<ReqT> {
-  data: ReqT;
-}
 
 export interface IGitHubStore {
   getOrganizationReposList(
-    params: GetOrganizationReposListParams
+      params: GetOrganizationReposListParams
   ): Promise<ApiResponse<RepoItem[], any>>;
-  getOrganizationRepoBranches(
-    params: GetOrganizationRepoBranchesParams
+
+  getRepoBranchesList(
+      params: GetRepoBranchesLisParams
   ): Promise<ApiResponse<BranchItem[], any>>;
-  getOrganizationRepo(
-    params: GetOrganizationRepoParams
+
+  getOrganizationRepoById(
+      params: GetOrganizationRepoByIdParams
   ): Promise<ApiResponse<RepoItem, any>>;
 }

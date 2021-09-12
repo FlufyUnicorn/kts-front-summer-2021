@@ -1,116 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import Input from "@components/Input";
+import { useReposContext } from "../../App";
 import Button from "@components/Button";
+import Input from "@components/Input";
 import RepoTile from "@components/RepoTile";
-import { RepoItem } from "@store/GitHubStore/types";
-import GitHubStore from "@store/GitHubStore";
 import SearchIcon from "@components/SearchIcon";
-import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
+import { Spin } from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useHistory } from "react-router-dom";
 
-import "../../styles/colors.scss";
 import "./ReposSearchPage.scss";
 
-export const gitHubStore = new GitHubStore();
+export const ReposSearchPage: React.FC = () => {
+  let history = useHistory();
+  const reposContext = useReposContext();
+  const [value, setValue] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
-type ReposContextType = { list: RepoItem[]; isLoading: boolean; load: () => void };
+  useEffect(() => {
+    reposContext.load();
+  }, [value]);
 
-const ReposContext = React.createContext<ReposContextType>({
-  list: [],
-  isLoading: true,
-  load: () => {},
-});
-
-const Provider = ReposContext.Provider;
-
-export const useReposContext = () => React.useContext(ReposContext);
-
-export const ReposSearchPage = () => {
-  const [visible, setVisible] = React.useState(false);
-  const [selectedRepo, setSelectedRepo] = React.useState<null | RepoItem>(null);
-
-
-  const [localState, setLocalState] = React.useState<{
-    value: string;
-    isLoading: boolean;
-    list: RepoItem[];
-  }>({
-    value: "",
-    isLoading: false,
-    list: [],
-  });
-
-  const showDrawer = () => {
-    setVisible(true);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    setDisabled(false);
   };
 
-  const onClose = () => {
-    setVisible(false);
-    setSelectedRepo(null);
-  };
-
-  const handleKeyboard = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalState({ value: e.target.value, isLoading: false, list: [] });
-  };
-
-
-
-
-
-  const load = () => {
-    setLocalState({
-      value: localState.value,
-      isLoading: true,
-      list: localState.list,
+  const handleSearch = () => {
+    const filteredData = reposContext.repoList.filter((repo) => {
+      return repo.name.toLowerCase().includes(value.toLowerCase());
     });
-    gitHubStore
-      .getOrganizationReposList({
-        organizationName: localState.value,
-      })
-      .then((result) => {
-        if (result.success) {
-          setLocalState({
-            value: localState.value,
-            isLoading: false,
-            list: result.data,
-          });
-        } else {
-          setLocalState({
-            value: localState.value,
-            isLoading: false,
-            list: localState.list,
-          });
-        }
-      });
+    reposContext.setRepoList(filteredData);
+    setDisabled(true);
   };
+
   return (
     <div className="main-page">
       <div className="search">
-        <Input
-          placeholder="Введите название организации"
-          onChange={handleKeyboard}
-          value={localState.value}
-        />
-        <Button
-          children={<SearchIcon currentColor={"#ffffff"} />}
-          disabled={localState.isLoading}
-          onClick={load}
-        />
+        <Spin spinning={reposContext.isLoading} tip="Loading...">
+          <div className="repositoriesPage">
+            <Input
+              placeholder="Введите название репозитория"
+              onChange={handleChange}
+              value={value}
+            />
+            <Button onClick={handleSearch} disabled={disabled}>
+              <SearchIcon />
+            </Button>
+            <div className="repositoriesPage__repoItem">
+              <InfiniteScroll
+                next={reposContext.fetchData}
+                hasMore={true}
+                loader={<h4>Loading...</h4>}
+                dataLength={reposContext.repoList.length}
+              >
+                {reposContext.repoList.map((item) => (
+                  <React.Fragment key={item.id}>
+                    <RepoTile
+                      item={item}
+                      onClick={() => {
+                        history.push(`/repos/${item.id}`);
+                      }}
+                    />
+                  </React.Fragment>
+                ))}
+                {!reposContext.repoList.length && (
+                  <span>Репозиториев не найдено</span>
+                )}
+              </InfiniteScroll>
+            </div>
+          </div>
+        </Spin>
       </div>
-      {localState.list.map((item) => {
-        const handleRepoCardClick = () => {
-          setSelectedRepo(item);
-          showDrawer();
-        };
-        return (
-          <RepoTile key={item.id} item={item} onClick={handleRepoCardClick} />
-        );
-      })}
-      <RepoBranchesDrawer
-        selectedRepo={selectedRepo}
-        onClose={onClose}
-        visible={visible}
-      />
     </div>
   );
 };
