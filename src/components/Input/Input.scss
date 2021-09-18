@@ -1,0 +1,28 @@
+@import "../../styles/colors.scss";
+
+.search input {
+  width: 295px;
+  height: 50px;
+  font-size: 14px;
+  line-height: 16px;
+  color: $colorHint;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin: 0 12px 4px 20px;
+  border: 1px solid $colorBorder;
+  padding-left: 12px;
+  outline: $colorAccent;
+  transition: all;
+}
+
+.search input:disabled {
+  background: $colorDisabled;
+  border: 1px solid $colorBorder;
+  transition-duration: 1s;
+}
+
+.search input:focus {
+  background: $colorBackground;
+  border: 1px solid $colorAccent;
+  transition-duration: 1s;
+}

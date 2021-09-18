@@ -1,0 +1,26 @@
+@import "../../styles/colors.scss";
+
+.search button {
+  background: $colorAccent;
+  border-radius: 6px;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  cursor: pointer;
+}
+
+.search button:hover {
+  opacity: 150%;
+  transition-duration: 0.5s;
+}
+
+[disabled] {
+  opacity: 50%;
+  cursor: auto;
+  transition-duration: 0.5s;
+}
+
+[disabled]:hover {
+  opacity: 50%;
+  transition-duration: 0.5s;
+}
